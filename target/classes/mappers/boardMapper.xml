@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="kr.co.dong.boardMapper">
+ 	<!-- 로그인 처리를 위한 SQL -->
+  	<select id="login" parameterType="java.util.Map" resultType="java.util.Map">
+  		select id, name
+  		from springuser
+  		where id=#{id} and password=#{password}  		
+  	</select>	
+  	<select id="list" resultType="BoardDTO">
+		select *
+		from board
+		order by bno asc
+	</select> 		
+  	<insert id="register" parameterType="BoardDTO">
+		insert into board(bno, title, content, id, reddate, readcnt, etc)
+		values (#{bno}, #{title}, #{content}, #{id}, curdate(), 0, #{etc})
+	</insert>
+	<update id="update" parameterType="BoardDTO">
+		update scott.board
+		SET title=#{title}, content=#{content}, reddate=curdate( )
+		WHERE bno= #{bno}
+	</update>
+	<select id="detail" parameterType="java.lang.Integer" resultType="BoardDTO">
+		select *
+		from board
+		where bno = #{bno}
+	</select>
+	<delete id="delete">
+		delete from scott.board
+		where bno = #{bno}
+	</delete>
+	<update id="updataReadCnt" parameterType="java.lang.Integer">
+		update board
+		set
+		readcnt = readcnt + 1
+		where bno = #{bno}
+	</update>
+		<select id="detail1" parameterType="java.lang.Integer" resultType="BoardReply">
+		select *
+		from board_reply
+		where bno = #{bno}		
+	</select>
+	<select id="reply" parameterType="BoardReply">
+		insert into
+		board_reply(rewriter, rememo, redate, bno)
+		values (#{rewriter}, #{rememo}, curdate(), #{bno})
+	</select>
+	<select id="detailReply" parameterType="BoardReply" resultType="BoardReply">
+  		select *
+  		from board_reply
+  		where reno = #{reno}
+  	</select>
+  	<update id="replyupdate" parameterType="BoardReply">
+  		update board_reply
+  		set rewriter = #{rewriter}, rememo = #{rememo}, redate = curdate()
+  		where reno = #{reno}
+  	</update>
+  	<delete id="replyDelete" parameterType="java.lang.Integer">
+  		delete from board_reply
+  		where reno = #{reno} 
+  	</delete>
+  	<select id="listPage" resultType="BoardDTO">
+  		select bno, title, content, id, reddate, readcnt, etc
+  		from board
+  		where bno > 0
+  		order by bno asc, reddate asc
+  		limit #{page}, 10
+  	</select>
+  	<select id="listCriteria" resultType="BoardDTO">
+  		select bno, title, content, id, reddate, readcnt, etc
+  		from board
+  		where bno > 0
+  		order by bno asc, reddate asc
+  		limit #{pageStart}, #{perPageNum}
+  	</select>
+	<select id="countPaging" resultType="int">
+		select count(bno)
+		from board
+		where bno > 0
+	</select>
+ </mapper>
