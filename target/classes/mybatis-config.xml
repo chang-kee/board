@@ -4,7 +4,6 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
  <configuration>
  	<typeAliases>
- 		<typeAlias alias="EmpVO" type="kr.co.dong.emp.EmpVO"/>
  		<typeAlias alias="BoardDTO" type="kr.co.dong.board.BoardDTO"/>
  		<typeAlias alias="BoardReply" type="kr.co.dong.board.BoardReply"/>
  	</typeAliases>
